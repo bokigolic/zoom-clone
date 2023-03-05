@@ -1,3 +1,4 @@
+const { Socket } = require('dgram');
 const express = require('express');
 const app = express();
 const server = require('http').Server(app);
@@ -9,13 +10,22 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-  res.redirect(`/${uuidV4}`)
-  
+  res.redirect(`/${uuidV4()}`)
+
+
+
+
 
 })
 
 app.get('/:room', (req, res) => {
-  res.render('rom', { roomId: req.params.room })
+  res.render('room', { roomId: req.params.room })
+})
+
+io.on('connection', socket => {
+  socket.on('join-room', (roomId, userId) => {
+    console.log(roomId, userId)
+  })
 })
 
 server.listen(3000)
